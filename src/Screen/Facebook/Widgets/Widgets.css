@@ -1,0 +1,19 @@
+.widgets {
+    flex: 0.33;
+    display: flex;
+    /* width: 220px; */
+    flex-shrink: 0;
+    position: sticky;
+    height: 100vh;
+    top: 84px;
+}
+
+.contact {
+    width: 100%;
+}
+
+.chatList {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}

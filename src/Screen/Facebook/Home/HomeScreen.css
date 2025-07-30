@@ -1,0 +1,62 @@
+.app {
+    background-color: #f1f2f5;
+    max-width: 100vw;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.app_body {
+    display: flex;
+}
+
+@media (max-width: 1280px) {
+
+    /* Áp dụng cho màn hình nhỏ hơn hoặc bằng 1280px (laptop trở xuống) */
+    .header_input input {
+        display: none;
+    }
+
+    .header_input {
+        padding: 10px;
+        background-color: #eff2f5;
+    }
+
+    .header_input.show input {
+        display: inline-block;
+        width: 140px;
+        margin-left: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar {
+        display: none;
+
+    }
+
+    .flag {
+        display: none;
+    }
+}
+
+@media (max-width: 1100px) {
+    .widgets {
+        display: none;
+    }
+
+    .feed {
+        padding: 20px 10px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* Áp dụng cho màn hình nhỏ hơn hoặc bằng 768px (tablet trở xuống) */
+    .header_center {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Áp dụng cho điện thoại */
+}

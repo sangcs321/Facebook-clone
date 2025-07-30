@@ -1,0 +1,7 @@
+.sidebar {
+    padding: 10px;
+    position: sticky;
+    height: 100vh;
+    top: 84px;
+    width: 300px;
+}
