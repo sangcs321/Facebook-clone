@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import Base_URL from '../../Constants/apiConfig'
-import CreatePost from '../../Screen/Facebook/Message/CreatePost';
+import CreatePost from '../../Components/Message/CreatePost';
 export const postApi = createApi({
     reducerPath: 'postApi',
     baseQuery: fetchBaseQuery({

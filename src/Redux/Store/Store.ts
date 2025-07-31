@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { userApi } from '../RTKQuery/userApi.ts'
-import userReducer from '../Slice/User.ts'
-import { postApi } from '../RTKQuery/postApi.ts';
+import { userApi } from '../RTKQuery/userApi'
+import userReducer from '../Slice/User'
+import { postApi } from '../RTKQuery/postApi';
 
 export const store = configureStore({
   reducer: {
