@@ -1,7 +1,6 @@
 import React from 'react';
 import FriendWidget from './FriendWidget';
 import './Widgets.css';
-import { User } from '@/Constants/types';
 
 
 function Widgets({onClick}) {

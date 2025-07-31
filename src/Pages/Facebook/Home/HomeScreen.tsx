@@ -1,15 +1,13 @@
-import Feed from "../../../Components/Feed/Feed";
-import Header from "../../../Components/Header/Header";
+import Feed from "@Components/Feed/Feed";
 
-import Sidebar from "../../../Components/Sidebar/Sidebar";
-import ChatBox from "../../../Components/Chat/Chatbox";
-import Widgets from "../../../Components/Widgets/Widgets";
+import Sidebar from "@Components/Sidebar/Sidebar";
+import ChatBox from "@Components/Chat/Chatbox";
+import Widgets from "@Components/Widgets/Widgets";
 import './HomeScreen.css';
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Login from "../Login/Login";
-import { RootState } from '@/Redux/Store/Store';
+import { RootState } from '@Store';
 
 const HomeScreen = () => {
   const user = useSelector((state: RootState) => state.user);

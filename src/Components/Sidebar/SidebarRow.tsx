@@ -13,7 +13,6 @@ function SidebarRow({ src, Icon, title }: SidebarRowProps) {
         <div className="sidebarRow">
             {src && <Avatar src={src}/>}
             {Icon && <Icon />}
-
             <h4>{title}</h4>
         </div>
     )

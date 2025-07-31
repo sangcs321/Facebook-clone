@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import "./Feed.css";
-import StoryReel from '../StoryReel/StoryReel';
-import MessageSender from '../Message/MessageSender';
-import Post from '../Post/Post';
+import StoryReel from '@Components/StoryReel/StoryReel';
+import MessageSender from '@Components/Message/MessageSender';
+import Post from '@Components/Post/Post';
 
 function Feed() {
     const [posts, setPosts] = useState([]);

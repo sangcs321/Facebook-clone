@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Select, Alert, message } from 'antd';
 import axios from 'axios';
-import { LanguageItem } from '@/Constants/types';
+import { LanguageItem } from '@Constants/types';
 
 interface LanguageUpdateProps {
     data: LanguageItem | null;

@@ -16,9 +16,9 @@ import AppsIcon from '@mui/icons-material/Apps';
 import MessageIcon from '@mui/icons-material/Message';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { clearUser } from '../../Redux/Slice/User';
+import { clearUser } from '@Slice/User';
 import { useSelector } from 'react-redux';
-import {RootState} from '@/Redux/Store/Store';
+import {RootState} from '@Store';
 
 const Header = () => {
   const [showSearch, setShowSearch] = useState(false);

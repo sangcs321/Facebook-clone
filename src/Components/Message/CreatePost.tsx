@@ -8,8 +8,8 @@ import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import GifBoxIcon from '@mui/icons-material/GifBox';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { useSelector } from "react-redux";
-import { useCreatePostMutation } from "@/Redux/RTKQuery/postApi";
-import { RootState } from "@/Redux/Store/Store";
+import { useCreatePostMutation } from "@RTKQuery/postApi";
+import { RootState } from "@Store";
 const { Text } = Typography;
 
 const CreatePost = ({ goToStep }) => {

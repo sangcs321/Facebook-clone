@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { Layout, Menu } from 'antd';
-import LanguageList from '../../Components/LanguageManage/LanguageList';
-import LanguageForm from '../../Components/LanguageManage/LanguageForm';
+import LanguageList from '@Components/LanguageManage/LanguageList';
+import LanguageForm from '@Components/LanguageManage/LanguageForm';
 const { Header, Content } = Layout;
 function LanguageManage() {
   const [language, setLanguage] = useState('');

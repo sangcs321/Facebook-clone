@@ -8,11 +8,10 @@ import {
     UserOutlined,
 } from '@ant-design/icons';
 import './Profile.css';
-import Header from '../../../Components/Header/Header';
-import EditProfile from '../../../Components/Profile/EditProfile';
+import EditProfile from '@Components/Profile/EditProfile';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { RootState } from '@/Redux/Store/Store';
+import { RootState } from '@Store';
 
 const { Content } = Layout;
 const { TabPane } = Tabs;

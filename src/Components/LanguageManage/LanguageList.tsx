@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, message, Tabs } from 'antd';
 import axios from 'axios';
-import LanguageUpdate from '@/Components/LanguageManage/LanguageUpdate';
+import LanguageUpdate from '@Components/LanguageManage/LanguageUpdate';
 import { DeleteOutlined, EditOutlined, FormatPainterOutlined } from '@ant-design/icons';
 import LanguageCustom from './LanguageCustom';
-import { LanguageItem, LanguageListProps } from '@/Constants/types';
+import { LanguageItem, LanguageListProps } from '@Constants/types';
 
 const { TabPane } = Tabs;
 

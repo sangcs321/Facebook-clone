@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import RemoveIcon from '@mui/icons-material/Remove';
 import CallIcon from '@mui/icons-material/Call';
 import VideocamIcon from '@mui/icons-material/Videocam';
-import { ChatUser } from '@/Constants/types';
+import { ChatUser } from '@Constants/types';
 interface ChatBoxProps {
     user: ChatUser;
     onClose: () => void;

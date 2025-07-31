@@ -1,10 +1,10 @@
 import { DatePicker, Tabs, Form, Input, Button, Radio, Avatar, Image, message, Col, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
-import { useUpdateUserMutation } from '@/Redux/RTKQuery/userApi';
+import { useUpdateUserMutation } from '@RTKQuery/userApi';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from '@/Redux/Slice/User';
-import { RootState } from '@/Redux/Store/Store';
+import { setUser } from '@Slice/User';
+import { RootState } from '@Store';
 
 const EditProfile = () => {
     const user = useSelector((state: RootState) => state.user);

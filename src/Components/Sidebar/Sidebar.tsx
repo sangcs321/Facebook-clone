@@ -11,7 +11,7 @@ import StorefrontIcon from '@mui/icons-material/Storefront';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import useSelection from 'antd/es/table/hooks/useSelection';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/Redux/Store/Store';
+import { RootState } from '@Store';
 
 function Sidebar() {
   const user = useSelector((state: RootState ) => state.user);

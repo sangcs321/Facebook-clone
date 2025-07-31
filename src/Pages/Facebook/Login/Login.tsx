@@ -2,9 +2,9 @@ import React from 'react';
 import "./Login.css";
 import { Form, Input, message, Button } from 'antd';
 import axios from 'axios';
-import BASE_URL from '../../../Constants/apiConfig.js'
+import BASE_URL from '@Constants/apiConfig.js'
 import { useDispatch } from 'react-redux';
-import { setUser } from '../../../Redux/Slice/User';
+import { setUser } from '@Slice/User';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {

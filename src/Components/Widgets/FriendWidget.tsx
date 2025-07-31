@@ -1,7 +1,6 @@
 import React from 'react';
 import "./FriendWidget.css";
 import { Avatar } from '@mui/material';
-import { User } from '@/Constants/types';
 
 interface FriendWidgetProps {
   src?: string;

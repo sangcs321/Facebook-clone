@@ -16,7 +16,15 @@
     "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["*"],
+      "@Components/*": ["Components/*"],
+      "@Redux/*": ["Redux/*"],
+      "@Store": ["Redux/Store/Store.ts"],
+      "@Pages/*": ["Pages/*"],
+      "@Layouts/*": ["Layouts/*"],
+      "@RTKQuery/*": ["Redux/RTKQuery/*"],
+      "@Constants/*": ["Constants/*"],
+      "@Slice/*": ["Redux/Slice/*"]
     }
   },
   "include": ["src"]
