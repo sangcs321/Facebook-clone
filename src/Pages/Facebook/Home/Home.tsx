@@ -1,13 +1,9 @@
-import Feed from "@Components/Feed/Feed";
-
-import Sidebar from "@Components/Sidebar/Sidebar";
-import ChatBox from "@Components/Chat/Chatbox";
-import Widgets from "@Components/Widgets/Widgets";
-import './Home.scss';
+import { Feed, Sidebar, ChatBox, Widgets } from "@Components";
+import "./Home.scss";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { RootState } from '@Store';
+import { RootState } from "@Store";
 
 const Home = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -19,7 +15,7 @@ const Home = () => {
     document.title = "Facebook";
   }, []);
 
-  const handleOpenChat = (user) => {
+  const handleOpenChat = (user: any) => {
     setChatUser(user);
     setIsChatOpen(true);
     console.log("Chat opened with user:", user);
@@ -42,9 +38,7 @@ const Home = () => {
         <Feed />
         {/* Widgets */}
         <Widgets onClick={handleOpenChat} />
-        {isChatOpen && (
-          <ChatBox user={chatUser} onClose={handleCloseChat} />
-        )}
+        {isChatOpen && <ChatBox user={chatUser} onClose={handleCloseChat} />}
       </div>
     </div>
   );

@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
-import styles from "./Login.module.scss";
-import { Form, Input, message, Button } from "antd";
-import axios from "axios";
 import BASE_URL from "@Constants/apiConfig.js";
-import { useDispatch } from "react-redux";
 import { setUser } from "@Slice/User";
+import { Button, Form, Input, message } from "antd";
+import axios from "axios";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import styles from "./Login.module.scss";
 
 function Login() {
   const [form] = Form.useForm();

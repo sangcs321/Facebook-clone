@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '@Slice/User';
 import { RootState } from '@Store';
 
-const EditProfile = () => {
+export const EditProfile = () => {
     const user = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch();
     const [view, setView] = useState('profile');
@@ -181,4 +181,3 @@ const EditProfile = () => {
     );
 };
 
-export default EditProfile;

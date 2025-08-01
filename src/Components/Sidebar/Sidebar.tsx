@@ -1,6 +1,6 @@
-import React from 'react';
-import SidebarRow from './SidebarRow';
-import './Sidebar.scss';
+import React from "react";
+import { SidebarRow } from "@Components";
+import "./Sidebar.scss";
 import {
   ExpandMoreOutlined,
   LocalHospital,
@@ -9,19 +9,21 @@ import {
   Chat,
   Storefront,
   VideoLibrary,
-} from '@mui/icons-material';
-import { useSelector } from 'react-redux';
-import { RootState } from '@Store';
+} from "@mui/icons-material";
+import { useSelector } from "react-redux";
+import { RootState } from "@Store";
 
-function Sidebar() {
+export const Sidebar = () => {
   const user = useSelector((state: RootState) => state.user);
   return (
     <div className="sidebar">
-      <SidebarRow src={"https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg"} title={user.name} />
       <SidebarRow
-        Icon={LocalHospital}
-        title="COVID-19 Information Center"
+        src={
+          "https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg"
+        }
+        title={user.name}
       />
+      <SidebarRow Icon={LocalHospital} title="COVID-19 Information Center" />
       <SidebarRow Icon={EmojiFlags} title="Pages" />
       <SidebarRow Icon={People} title="Friends" />
       <SidebarRow Icon={Chat} title="Messanger" />
@@ -30,6 +32,4 @@ function Sidebar() {
       <SidebarRow Icon={ExpandMoreOutlined} title="More" />
     </div>
   );
-}
-
-export default Sidebar;
+};

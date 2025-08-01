@@ -20,8 +20,8 @@
     "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
-      "@Components/*": [
-        "Components/*"
+      "@Components": [
+        "Components"
       ],
       "@Redux/*": [
         "Redux/*"

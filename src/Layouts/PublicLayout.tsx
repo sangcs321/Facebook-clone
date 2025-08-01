@@ -1,4 +1,4 @@
-import Header from "@Components/Header/Header";
+import { Header } from "@Components";
 import React from "react";
 import { Outlet } from "react-router-dom"; // ✅ thêm import này
 
@@ -7,7 +7,7 @@ const PublicLayout = () => {
     <>
       <Header />
       <main>
-        <Outlet /> 
+        <Outlet />
       </main>
     </>
   );

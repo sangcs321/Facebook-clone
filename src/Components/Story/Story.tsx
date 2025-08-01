@@ -1,15 +1,17 @@
-import React from 'react';
+import { Avatar } from "@mui/material";
 import "./Story.scss";
-import { Avatar, IconButton } from '@mui/material';
 
-
-function Story({image, profileSrc, title}) {
-    return (
-        <div style={{ backgroundImage: `url(${image})` }} className="story">
-            <Avatar className="story_avatar" src={profileSrc}/>
-            <h4>{title}</h4>
-        </div>
-    )
+interface StoryProps {
+  image: string;
+  profileSrc: string;
+  title: string;
 }
 
-export default Story;
+export const Story: React.FC<StoryProps> = ({ image, profileSrc, title }) => {
+  return (
+    <div style={{ backgroundImage: `url(${image})` }} className="story">
+      <Avatar className="story_avatar" src={profileSrc} />
+      <h4>{title}</h4>
+    </div>
+  );
+};
