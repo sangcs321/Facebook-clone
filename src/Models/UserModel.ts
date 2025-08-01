@@ -8,8 +8,8 @@ export interface User {
     address?: string,
     role: string,
     active: boolean,
-    gender: string,
-    dateOfBirth: string;
+    gender?: string,
+    dateOfBirth?: string;
 }
 export interface ChatUser {
     id: string;

@@ -1,25 +1,16 @@
 import LoginLayout from "@Layouts/LoginLayout";
 import PublicLayout from "@Layouts/PublicLayout";
-import HomeScreen from "@Pages/Facebook/Home/HomeScreen";
+import HomeScreen from "@Pages/Facebook/Home/Home";
 import Login from "@Pages/Facebook/Login/Login";
 import Profile from "@Pages/Facebook/Profile/Profile";
 import Register from "@Pages/Facebook/Register/Register";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useRoutes } from "react-router-dom";
+import PublicRoute from "./PublicRoute";
+import { LoginRoute } from "./LoginRoute";
 
 const AppRoutes = () => {
-    return (
-        <Routes>
-            {/* Public Layout */}
-            <Route element={<PublicLayout />}>
-                <Route path="/" element={<HomeScreen />} />
-                <Route path="/profile" element={<Profile />} />
-            </Route>
-            <Route element={<LoginLayout />}>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-            </Route>
-        </Routes>
-    );
+  const routes = [PublicRoute, LoginRoute];
+  return useRoutes(routes);
 };
 
 export default AppRoutes;

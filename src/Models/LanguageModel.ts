@@ -1,7 +1,7 @@
 export interface LanguageItem {
     id: string;
     code: string;
-    nameVi?: string;
+    nameVi: string;
     nameEn?: string;
 }
 

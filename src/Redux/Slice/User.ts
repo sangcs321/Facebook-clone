@@ -1,18 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-interface User {
-    id: string,
-    name?: string,
-    avatar?: string,
-    email: string,
-    phone?: string,
-    verified: boolean,
-    address?: string,
-    role: string,
-    active: boolean,
-    gender: string,
-    dateOfBirth: string;
-}
+import {User} from '@Models';
 
 const initialState: User = {
     id: '',
