@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import "./MessageSender.css";
+import "./MessageSender.scss";
 import { Avatar, IconButton } from '@mui/material';
 
 import VideocamIcon from "@mui/icons-material/Videocam";
@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { Button, Modal } from 'antd';
 import CreatePost from './CreatePost';
 import { motion, AnimatePresence } from "framer-motion";
-import { RootState } from '@/Redux/Store/Store';
+import { RootState } from '@Store';
 
 
 function MessageSender() {

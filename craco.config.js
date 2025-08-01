@@ -13,5 +13,14 @@ module.exports = {
       '@Constants': path.resolve(__dirname, 'src/Constants'),
       '@Slice': path.resolve(__dirname, 'src/Redux/Slice'),
     },
-  },
+  }, 
+  style: {
+    sass: {
+      loaderOptions: {
+        sassOptions: {
+          includePaths: [path.resolve(__dirname, "src")]
+        }
+      }
+    }
+  }
 };

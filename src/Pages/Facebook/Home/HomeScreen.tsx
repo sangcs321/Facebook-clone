@@ -3,7 +3,7 @@ import Feed from "@Components/Feed/Feed";
 import Sidebar from "@Components/Sidebar/Sidebar";
 import ChatBox from "@Components/Chat/Chatbox";
 import Widgets from "@Components/Widgets/Widgets";
-import './HomeScreen.css';
+import './HomeScreen.scss';
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -32,9 +32,10 @@ const HomeScreen = () => {
   if (!user) {
     return null;
   }
+
   return (
     <div className="app">
-      <div className="app_body">
+      <div className="appBody">
         {/* SideBar */}
         <Sidebar />
         {/* Feed */}

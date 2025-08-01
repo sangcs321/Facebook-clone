@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import "./Header.css";
+import styles from "./Header.module.scss";
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
 import FlagIcon from '@mui/icons-material/Flag';
@@ -18,14 +18,14 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { clearUser } from '@Slice/User';
 import { useSelector } from 'react-redux';
-import {RootState} from '@Store';
+import { RootState } from '@Store';
 
 const Header = () => {
   const [showSearch, setShowSearch] = useState(false);
   const user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const handleMenuClick = (e) => {
     console.log('Clicked menu item key:', e.key);
     switch (e.key) {
@@ -52,11 +52,13 @@ const Header = () => {
     </Menu>
   );
   return (
-    <div className="header">
-      <div className="header_left">
+    <div className={styles.header}>
+      <div className={styles['header__left']}>
         <img onClick={() => navigate("/")} src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/1200px-Facebook_f_logo_%282019%29.svg.png" alt="" />
 
-        <div className={`header_input ${showSearch ? "show" : ""}`}>
+        <div
+          className={`${styles["header__left__input"]} ${showSearch ? styles["show"] : ""}`}
+        >
           <SearchIcon
             className="search-toggle"
             onClick={() => setShowSearch(!showSearch)}
@@ -65,31 +67,31 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="header_center">
-        <div className="header_option  header_option--active">
+      <div className={styles['header__center']}>
+        <div className={`${styles['header__center__option']} ${styles['header__center__option--active']}`}>
           <HomeIcon fontSize="large" />
         </div>
 
-        <div className="header_option">
+        <div className={styles['header__center__option']}>
           <FlagIcon fontSize="large" />
         </div>
 
-        <div className="header_option">
+        <div className={styles['header__center__option']}>
           <SubscriptionsOutlined fontSize="large" />
         </div>
 
-        <div className="header_option">
+        <div className={styles['header__center__option']}>
           <StorefrontOutlined fontSize="large" />
         </div>
 
-        <div className="header_option">
+        <div className={styles['header__center__option']}>
           <SupervisedUserCircle fontSize="large" />
         </div>
 
       </div>
 
 
-      <div className="header_right">
+      <div className={styles['header__right']}>
         <img
           className="flag"
           src="https://flagcdn.com/w40/vn.png"
@@ -121,15 +123,15 @@ const Header = () => {
           }}
         />
 
-        <IconButton className="custom-icon-button">
+        <IconButton className={styles.customIconButton}>
           <AppsIcon />
         </IconButton>
 
-        <IconButton className="custom-icon-button">
+        <IconButton className={styles.customIconButton}>
           <MessageIcon />
         </IconButton>
 
-        <IconButton className="custom-icon-button">
+        <IconButton className={styles.customIconButton}>
           <NotificationsActiveIcon />
         </IconButton>
 

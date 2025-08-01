@@ -1,5 +1,5 @@
 import React from 'react';
-import "./Story.css";
+import "./Story.scss";
 import { Avatar, IconButton } from '@mui/material';
 
 

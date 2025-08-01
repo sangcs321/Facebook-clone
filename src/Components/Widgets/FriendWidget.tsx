@@ -1,5 +1,5 @@
 import React from 'react';
-import "./FriendWidget.css";
+import "./FriendWidget.scss";
 import { Avatar } from '@mui/material';
 
 interface FriendWidgetProps {

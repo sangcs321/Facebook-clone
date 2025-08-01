@@ -1,6 +1,6 @@
 import React from 'react';
 import FriendWidget from './FriendWidget';
-import './Widgets.css';
+import './Widgets.scss';
 
 
 function Widgets({onClick}) {

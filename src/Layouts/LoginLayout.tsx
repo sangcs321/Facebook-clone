@@ -1,11 +1,9 @@
-import Header from "@Components/Header/Header";
 import React from "react";
 import { Outlet } from "react-router-dom"; // ✅ thêm import này
 
-const PublicLayout = () => {
+const LoginLayout = () => {
   return (
     <>
-      <Header />
       <main>
         <Outlet /> 
       </main>
@@ -13,4 +11,4 @@ const PublicLayout = () => {
   );
 };
 
-export default PublicLayout;
+export default LoginLayout;

@@ -1,11 +1,11 @@
 import React from 'react';
-import "./Chatbox.css";
+import "./Chatbox.scss";
 import { Avatar } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { Close } from '@mui/icons-material';
 import RemoveIcon from '@mui/icons-material/Remove';
 import CallIcon from '@mui/icons-material/Call';
 import VideocamIcon from '@mui/icons-material/Videocam';
-import { ChatUser } from '@Constants/types';
+import { ChatUser } from '@Models';
 interface ChatBoxProps {
     user: ChatUser;
     onClose: () => void;
@@ -23,7 +23,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ user, onClose }) => {
                     <div className="iconItem call"><CallIcon /></div>
                     <div className="iconItem video"><VideocamIcon /></div>
                     <div className="iconItem minimize"><RemoveIcon /></div>
-                    <div className="iconItem close"><CloseIcon onClick={onClose} /></div>
+                    <div className="iconItem close"><Close onClick={onClose} /></div>
                 </div>
             </div>
             <div className="chatContent">

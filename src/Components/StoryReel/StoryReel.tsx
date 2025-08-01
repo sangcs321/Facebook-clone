@@ -1,5 +1,5 @@
 import React from 'react';
-import "./StoryReel.css";
+import "./StoryReel.scss";
 import Story from '@Components/Story/Story';
 
 function StoryReel() {

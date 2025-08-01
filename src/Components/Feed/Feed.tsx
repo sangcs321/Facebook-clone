@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import "./Feed.css";
+import "./Feed.scss";
 import StoryReel from '@Components/StoryReel/StoryReel';
 import MessageSender from '@Components/Message/MessageSender';
 import Post from '@Components/Post/Post';

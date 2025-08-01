@@ -1,5 +1,5 @@
-import React from 'react';
-import "./Login.css";
+import React, { useEffect } from 'react';
+import styles from './Login.module.scss';
 import { Form, Input, message, Button } from 'antd';
 import axios from 'axios';
 import BASE_URL from '@Constants/apiConfig.js'
@@ -8,6 +8,7 @@ import { setUser } from '@Slice/User';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
+
     const [form] = Form.useForm();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -45,20 +46,20 @@ function Login() {
     };
     return (
         <div className="container">
-            <div className="login">
-                <div className="containerLogo">
-                    <div className="logo">
+            <div className={styles.login}>
+                <div className={styles.containerLogo}>
+                    <div className={styles.logo}>
                         <img className="fb_logo _8ilh img" src="https://static.xx.fbcdn.net/rsrc.php/y1/r/4lCu2zih0ca.svg" alt="Facebook" />
                     </div>
                     <h2 className="title">FacebookFacebook giúp bạn kết nối và chia sẻ với mọi người trong cuộc sống của bạn.</h2>
                 </div>
-                <div className="loginForm">
+                <div className={styles.loginForm}>
                     <Form form={form} name="loginForm" onFinish={onFinish} layout="vertical">
                         <Form.Item name="email" rules={[{ required: true, message: "Vui lòng nhập Email!" }]}>
-                            <Input placeholder="Nhập Email của bạn " />
+                            <Input placeholder="Nhập Email của bạn " className={styles.input} />
                         </Form.Item>
                         <Form.Item name="password" rules={[{ required: true, message: "Vui lòng nhập Mật khẩu!" }]}>
-                            <Input.Password placeholder="Mật khẩu" className="password" />
+                            <Input.Password placeholder="Mật khẩu" className={styles.input} />
                         </Form.Item>
                         <Form.Item>
                             <Button type="primary" htmlType="submit">
@@ -68,8 +69,8 @@ function Login() {
                         <Button type="link" href="/login">
                             Quên mật khẩu?
                         </Button>
-                        <div className="line"></div>
-                        <Button className="create-account" type="link" href="/register">
+                        <div className={styles.line}></div>
+                        <Button className={styles.create} type="link" href="/register">
                             Tạo tài khoản mới
                         </Button>
                     </Form>

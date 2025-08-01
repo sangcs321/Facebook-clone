@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Avatar, Button, message, Space, Typography } from "antd";
-import "./CreatePost.css";
+import "./CreatePost.scss";
 import ImageIcon from '@mui/icons-material/Image';
 import PeopleIcon from '@mui/icons-material/People';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';

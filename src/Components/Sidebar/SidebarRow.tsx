@@ -1,5 +1,5 @@
 import React from 'react';
-import "./SidebarRow.css";
+import "./SidebarRow.scss";
 import { Avatar } from '@mui/material';
 
 interface SidebarRowProps {

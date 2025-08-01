@@ -4,9 +4,15 @@ import axios from 'axios';
 import LanguageUpdate from '@Components/LanguageManage/LanguageUpdate';
 import { DeleteOutlined, EditOutlined, FormatPainterOutlined } from '@ant-design/icons';
 import LanguageCustom from './LanguageCustom';
-import { LanguageItem, LanguageListProps } from '@Constants/types';
+import { LanguageItem } from '@Models';
 
 const { TabPane } = Tabs;
+
+export interface LanguageListProps {
+    listLanguages: LanguageItem[];
+    listCustom: LanguageItem[];
+    onSuccess: () => void;
+}
 
 const LanguageList: React.FC<LanguageListProps> = ({ listLanguages, onSuccess, listCustom }) => {
     const [languages, setLanguages] = useState<LanguageItem[]>([]);
@@ -173,9 +179,9 @@ const LanguageList: React.FC<LanguageListProps> = ({ listLanguages, onSuccess, l
                         onSuccess();
                         setIsModalVisible(false);
                     }}
-                    // onClose={() => {
-                    //     setIsModalVisible(false);
-                    // }}
+                // onClose={() => {
+                //     setIsModalVisible(false);
+                // }}
                 />
             </Modal>
             <Modal
@@ -191,9 +197,9 @@ const LanguageList: React.FC<LanguageListProps> = ({ listLanguages, onSuccess, l
                         onSuccess();
                         setIsModalVisible2(false);
                     }}
-                    // onClose={() => {
-                    //     setIsModalVisible2(false);
-                    // }}
+                // onClose={() => {
+                //     setIsModalVisible2(false);
+                // }}
                 />
             </Modal>
         </>

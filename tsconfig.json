@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -16,16 +20,36 @@
     "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
-      "@/*": ["*"],
-      "@Components/*": ["Components/*"],
-      "@Redux/*": ["Redux/*"],
-      "@Store": ["Redux/Store/Store.ts"],
-      "@Pages/*": ["Pages/*"],
-      "@Layouts/*": ["Layouts/*"],
-      "@RTKQuery/*": ["Redux/RTKQuery/*"],
-      "@Constants/*": ["Constants/*"],
-      "@Slice/*": ["Redux/Slice/*"]
+      "@Components/*": [
+        "Components/*"
+      ],
+      "@Redux/*": [
+        "Redux/*"
+      ],
+      "@Store": [
+        "Redux/Store/Store.ts"
+      ],
+      "@Pages/*": [
+        "Pages/*"
+      ],
+      "@Layouts/*": [
+        "Layouts/*"
+      ],
+      "@RTKQuery/*": [
+        "Redux/RTKQuery/*"
+      ],
+      "@Constants/*": [
+        "Constants/*"
+      ],
+      "@Slice/*": [
+        "Redux/Slice/*"
+      ],
+      "@Models": [
+        "Models"
+      ]
     }
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }
