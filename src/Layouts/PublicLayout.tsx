@@ -1,16 +1,16 @@
-import { Header } from "@Components";
+import { Header, RequireAuth } from "@Components";
 import React from "react";
-import { Outlet } from "react-router-dom"; // ✅ thêm import này
+import { Outlet } from "react-router-dom";
 
-const PublicLayout = () => {
+export const PublicLayout = () => {
   return (
-    <>
-      <Header />
-      <main>
-        <Outlet />
-      </main>
-    </>
+    <RequireAuth>
+      <>
+        <Header />
+        <main>
+          <Outlet />
+        </main>
+      </>
+    </RequireAuth>
   );
 };
-
-export default PublicLayout;

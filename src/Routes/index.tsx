@@ -1,9 +1,10 @@
 import { useRoutes } from "react-router-dom";
-import { LoginRoute } from "./LoginRoute";
-import PublicRoute from "./PublicRoute";
+import { AuthRoute } from "./AuthRoute";
+import { PublicRoute } from "./PublicRoute";
+import { AdminRoute } from "./AdminRoute";
 
 const AppRoutes = () => {
-  const routes = [PublicRoute, LoginRoute];
+  const routes = [PublicRoute, AuthRoute, AdminRoute];
   return useRoutes(routes);
 };
 

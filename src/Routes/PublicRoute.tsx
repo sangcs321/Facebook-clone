@@ -1,29 +1,17 @@
-import { RequireAuth } from "@Components";
-import PublicLayout from "@Layouts/PublicLayout";
-import Home from "@Pages/Facebook/Home/Home";
-import Profile from "@Pages/Facebook/Profile/Profile";
+import { PublicLayout } from "@Layouts";
+import { HomePage, ProfilePage } from "@Pages";
 import { RouteObject } from "react-router-dom";
 
-const PublicRoute: RouteObject = {
+export const PublicRoute: RouteObject = {
   element: <PublicLayout />,
   children: [
     {
       path: "/",
-      element: (
-        <RequireAuth>
-          <Home />
-        </RequireAuth>
-      ),
+      element: <HomePage />,
     },
     {
       path: "/profile",
-      element: (
-        <RequireAuth>
-          <Profile />
-        </RequireAuth>
-      ),
+      element: <ProfilePage />,
     },
   ],
 };
-
-export default PublicRoute;

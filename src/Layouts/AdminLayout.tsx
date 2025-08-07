@@ -1,11 +1,15 @@
+import { RequireAuth } from "@Components";
 import React from "react";
+import { Outlet } from "react-router-dom";
 
-const AdminLayout = ({ children }: { children: React.ReactNode }) => {
+export const AdminLayout = () => {
   return (
     <>
-        <main>{children}</main>
+      <RequireAuth allowedRoles={["ADMIN"]}>
+        <main>
+          <Outlet />
+        </main>
+      </RequireAuth>
     </>
   );
 };
-
-export default AdminLayout;

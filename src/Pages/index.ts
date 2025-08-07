@@ -1,0 +1,5 @@
+export * from "./Facebook/HomePage/HomePage"
+export * from  "./Facebook/LoginPage/LoginPage"
+export * from  "./Facebook/RegisterPage/RegisterPage"
+export * from "./Facebook/ProfilePage/ProfilePage"
+export * from  "./Language/LanguageManagePage"

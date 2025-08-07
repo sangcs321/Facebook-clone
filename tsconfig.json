@@ -46,7 +46,9 @@
       ],
       "@Models": [
         "Models"
-      ]
+      ],
+      "@Pages":["Pages"],
+      "@Layouts":["Layouts"],
     }
   },
   "include": [
