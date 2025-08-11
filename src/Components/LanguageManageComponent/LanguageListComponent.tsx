@@ -4,7 +4,7 @@ import {
   FormatPainterOutlined,
 } from "@ant-design/icons";
 import { LanguageCustom, LanguageUpdate } from "@Components";
-import { LanguageCustomItem, LanguageItem } from "@Models";
+import { LanguageCustomItem, LanguageModel } from "@Models";
 import { Button, message, Modal, Table, Tabs } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -12,8 +12,8 @@ import React, { useEffect, useState } from "react";
 const { TabPane } = Tabs;
 
 export interface LanguageListProps {
-  listLanguages: LanguageItem[];
-  listCustom: LanguageItem[];
+  listLanguages: LanguageModel[];
+  listCustom: LanguageModel[];
   onSuccess: () => void;
 }
 
@@ -22,8 +22,8 @@ export const LanguageList: React.FC<LanguageListProps> = ({
   onSuccess,
   listCustom,
 }) => {
-  const [languages, setLanguages] = useState<LanguageItem[]>([]);
-  const [listCustomState, setListCustomState] = useState<LanguageItem[]>([]);
+  const [languages, setLanguages] = useState<LanguageModel[]>([]);
+  const [listCustomState, setListCustomState] = useState<LanguageModel[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisible2, setIsModalVisible2] = useState(false);
   const [editingData, setEditingData] = useState<LanguageCustomItem | null>(

@@ -1,6 +1,6 @@
 import { Feed, Sidebar, ChatBox, Widgets } from "@Components";
 import "./HomePage.scss";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "@Store";
@@ -25,17 +25,21 @@ export const HomePage = () => {
     setIsChatOpen(false);
     setChatUser(null);
   };
+
+  const renderFeed = useCallback(() => {
+    return <Feed />;
+  }, []);
+
   if (!user) {
     return null;
   }
-
   return (
     <div className="app">
       <div className="appBody">
         {/* SideBar */}
         <Sidebar />
         {/* Feed */}
-        <Feed />
+        {renderFeed()}
         {/* Widgets */}
         <Widgets onClick={handleOpenChat} />
         {isChatOpen && <ChatBox user={chatUser} onClose={handleCloseChat} />}

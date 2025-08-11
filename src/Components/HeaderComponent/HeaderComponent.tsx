@@ -18,13 +18,14 @@ import {
 } from "iconsax-reactjs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { c } from "framer-motion/dist/types.d-Bq-Qm38R";
 
 export const Header = () => {
   const [showSearch, setShowSearch] = useState(false);
   const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [language, setLanguage] = useState("en");
   const handleMenuClick = (e) => {
     console.log("Clicked menu item key:", e.key);
     switch (e.key) {
@@ -48,12 +49,21 @@ export const Header = () => {
         break;
     }
   };
+  const handleLanguageChange = (e) => {
+    setLanguage(e.key);
+  };
   const menu = (
     <Menu onClick={handleMenuClick}>
       <Menu.Item key="1">Thông tin cá nhân</Menu.Item>
       <Menu.Item key="2">Cài đặt</Menu.Item>
       <Menu.Item key="4">Quản lý</Menu.Item>
       <Menu.Item key="3">Đăng xuất</Menu.Item>
+    </Menu>
+  );
+  const menuLanguage = (
+    <Menu onClick={handleLanguageChange}>
+      <Menu.Item key="vi">Tiếng Việt</Menu.Item>
+      <Menu.Item key="en">English</Menu.Item>
     </Menu>
   );
   return (
@@ -104,36 +114,39 @@ export const Header = () => {
       </div>
 
       <div className={styles["header__right"]}>
-        <img
-          className="flag"
-          src="https://flagcdn.com/w40/vn.png"
-          alt="Vietnamese"
-          // onClick={() => handleLanguageChange('vi')}
-          style={{
-            cursor: "pointer",
-            width: 48,
-            height: 32,
-            // opacity: language === 'vi' ? 1 : 0.5,
-            // border: language === 'vi' ? '2px solid #1890ff' : 'none',
-            borderRadius: 2,
-            marginRight: 8,
-          }}
-        />
-        <img
-          className="flag"
-          src="https://flagcdn.com/w40/us.png"
-          alt="English"
-          // onClick={() => handleLanguageChange('en')}
-          style={{
-            cursor: "pointer",
-            width: 48,
-            height: 32,
-            // opacity: language === 'en' ? 1 : 0.5,
-            // border: language === 'en' ? '2px solid #1890ff' : 'none',
-            borderRadius: 2,
-            marginRight: 8,
-          }}
-        />
+        <Dropdown
+          overlay={menuLanguage}
+          trigger={["click"]}
+          placement="bottomRight"
+        >
+          {language === "vi" ? (
+            <img
+              className="flag"
+              src="https://flagcdn.com/w40/vn.png"
+              alt="Vietnamese"
+              style={{
+                cursor: "pointer",
+                width: 48,
+                height: 32,
+                borderRadius: 2,
+                marginRight: 8,
+              }}
+            />
+          ) : (
+            <img
+              className="flag"
+              src="https://flagcdn.com/w40/us.png"
+              alt="English"
+              style={{
+                cursor: "pointer",
+                width: 48,
+                height: 32,
+                borderRadius: 2,
+                marginRight: 8,
+              }}
+            />
+          )}
+        </Dropdown>
 
         <IconButton className={styles.customIconButton}>
           <Category size="32" color="#808080" variant="Bold" />

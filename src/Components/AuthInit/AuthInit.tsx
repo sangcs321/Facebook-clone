@@ -8,7 +8,9 @@ import { setUser } from "@Redux/Slice/UserSlice";
 
 export const AuthInit = ({ children }) => {
   const dispatch = useDispatch();
+
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
@@ -38,7 +40,9 @@ export const AuthInit = ({ children }) => {
     } else {
       setLoading(false);
     }
-  }, [dispatch]);
+  }, []);
+
   if (loading) return <div>Loading...</div>;
+
   return children;
 };

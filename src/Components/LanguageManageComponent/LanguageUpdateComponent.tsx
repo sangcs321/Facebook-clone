@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Select, Alert, message } from "antd";
 import axios from "axios";
-import { LanguageItem } from "@Models";
+import { LanguageModel } from "@Models";
 
 interface LanguageUpdateProps {
-  data: LanguageItem | null;
+  data: LanguageModel | null;
   onSuccess: () => void;
   onClose: () => void;
 }

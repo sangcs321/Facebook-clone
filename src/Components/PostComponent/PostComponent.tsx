@@ -5,6 +5,7 @@ import { Avatar } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import "./PostComponent.scss";
 import { ReactApis } from "Apis/ReactApis";
+import { Image } from "antd";
 
 interface PostProps {
   postId: number;
@@ -39,57 +40,88 @@ export const Post: React.FC<PostProps> = ({
 }) => {
   const renderImages = () => {
     const count = files.length;
-    if (count == 1) {
-      return <img src={files[0]} alt="" className="post-image full" />;
+
+    if (count === 1) {
+      return (
+        <Image
+          src={files[0]}
+          alt=""
+          className="post-image full"
+          preview={true}
+          fallback="https://via.placeholder.com/200?text=No+Image"
+        />
+      );
     }
 
-    if (count == 2) {
+    if (count === 2) {
       return (
         <div className="post-image-grid two">
           {files.map((file, index) => (
-            <img key={index} src={file} alt="" className="image-half" />
+            <Image
+              key={index}
+              src={file}
+              alt=""
+              className="image-half"
+              preview={true}
+            />
           ))}
         </div>
       );
     }
-    if (count == 3) {
+
+    if (count === 3) {
       return (
         <div className="post-image-grid three">
           <div className="large">
-            <img src={files[0]} alt="" />
+            <Image src={files[0]} alt="" preview />
           </div>
           <div className="small">
-            <img src={files[1]} />
+            <Image src={files[1]} preview />
           </div>
           <div className="small">
-            <img src={files[2]} />
+            <Image src={files[2]} preview />
           </div>
         </div>
       );
     }
-    if (count == 4) {
+
+    if (count === 4) {
       return (
         <div className="post-image-grid four">
           {files.map((file, index) => (
-            <img src={file} key={index} alt="" className="image-quarter" />
+            <Image
+              key={index}
+              src={file}
+              alt=""
+              className="image-quarter"
+              preview
+            />
           ))}
         </div>
       );
     }
+
     if (count >= 5) {
       return (
         <div className="post-image-grid four">
           {files.slice(0, 3).map((file, index) => (
-            <img src={file} key={index} className="image-quarter" alt="" />
+            <Image
+              key={index}
+              src={file}
+              className="image-quarter"
+              alt=""
+              preview
+            />
           ))}
           <div className="overlay-container">
-            <img src={files[3]} alt="" className="image-quarter" />
+            <Image src={files[3]} alt="" className="image-quarter" preview />
             <div className="overlay">+{count - 4}</div>
           </div>
         </div>
       );
     }
   };
+
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseEnter = () => {
@@ -204,7 +236,9 @@ export const Post: React.FC<PostProps> = ({
         <p>{caption}</p>
       </div>
 
-      <div className="post_images">{renderImages()}</div>
+      <div className="post_images">
+        {<Image.PreviewGroup>{renderImages()}</Image.PreviewGroup>}
+      </div>
       <div className="post-info">
         <div className="post-info-react">
           <div className="post-react-type">

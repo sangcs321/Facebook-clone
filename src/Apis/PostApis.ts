@@ -5,8 +5,10 @@ export const PostApis = {
   getPostById(id: number) {
     return ApiService.get<PostModel>(`/api/post/${id}`);
   },
-  getFriendPosts(userId: number) {
-    return ApiService.get<PostModel[]>(`/api/post/friend/${userId}`);
+  getFriendPosts(userId: number, page: number, limit: number = 5) {
+    return ApiService.get<PostModel[]>(
+      `/api/post/friend/${userId}?page=${page}&limit=${limit}`
+    );
   },
   createPost(post: CreatePostModel) {
     return ApiService.post<PostModel>(`/api/post`, post);

@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { store } from "@Store";
 import AppRoutes from "./Routes";
 import { AuthInit } from "@Components";
+import { useEffect } from "react";
 
 function App() {
   return (

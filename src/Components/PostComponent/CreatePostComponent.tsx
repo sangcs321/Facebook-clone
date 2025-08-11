@@ -105,7 +105,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({
         </div>
       </Space>
       {previewImages.length > 0 && (
-        <Space wrap style={{ width: "100%" }}>
+        <Space style={{ width: "100%" }} wrap>
           {previewImages.map((img, index) => (
             <div className="imageAddPost" key={index}>
               <img src={img} alt={`preview-${index}`} />

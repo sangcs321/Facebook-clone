@@ -1,6 +1,5 @@
-export interface LanguageItem {
-    code: string;
-    nameVi: string;
-    nameEn?: string;
+export interface LanguageModel {
+  code: string;
+  nameVi: string;
+  nameEn?: string;
 }
-
