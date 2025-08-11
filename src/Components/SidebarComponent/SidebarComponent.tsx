@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 export const Sidebar = () => {
   const { user } = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
+
   return (
     <div className="sidebar">
       <SidebarRow
@@ -24,6 +25,7 @@ export const Sidebar = () => {
           "https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg"
         }
         title={user.name}
+        onClick={() => navigate("/profile")}
       />
       <SidebarRow Icon={LocalHospital} title="COVID-19 Information Center" />
       <SidebarRow Icon={EmojiFlags} title="Pages" />

@@ -16,7 +16,8 @@ export const LoginPage = () => {
       .then((response) => {
         const token = response.data.token;
         const userId = response.data.userId;
-        sessionStorage.setItem("token", token);
+        localStorage.setItem("token", token);
+        localStorage.setItem("userId", userId);
         if (token) {
           axios
             .get(`${BASE_URL}/api/user/${userId}`, {

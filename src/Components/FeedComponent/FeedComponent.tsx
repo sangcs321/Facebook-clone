@@ -10,6 +10,10 @@ import { useSelector } from "react-redux";
 export const Feed = () => {
   const { user } = useSelector((state: RootState) => state.user);
   const [posts, setPosts] = useState<PostModel[]>([]);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const limit = 5;
+  const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
     const postsRes = await PostApis.getFriendPosts(user.id);
@@ -33,14 +37,20 @@ export const Feed = () => {
       {posts
         .filter((post) => post.status !== "deleted")
         .map((post) => (
-          <Post
-            key={post.id}
-            avatarUrl={user.avatarUrl}
-            caption={post.caption}
-            createdAt={post.createdAt}
-            name={post.name}
-            files={post.listFiles}
-          />
+          <>
+            <Post
+              key={post.id}
+              userId={post.userId}
+              postId={post.id}
+              avatarUrl={user.avatarUrl}
+              caption={post.caption}
+              createdAt={post.createdAt}
+              name={post.name}
+              files={post.listFiles}
+              userReact={post.userReact}
+              listReacts={post.listReacts}
+            />
+          </>
         ))}
     </div>
   );

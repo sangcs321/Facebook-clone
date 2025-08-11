@@ -4,3 +4,4 @@ export * from "./LanguageCustomModels";
 export * from "./FriendModel";
 export * from "./PostModel";
 export * from "./CreatePostModel";
+export * from "./ReactModel";

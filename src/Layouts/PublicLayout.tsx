@@ -4,13 +4,15 @@ import { Outlet } from "react-router-dom";
 
 export const PublicLayout = () => {
   return (
-    <RequireAuth>
-      <>
-        <Header />
-        <main>
-          <Outlet />
-        </main>
-      </>
-    </RequireAuth>
+    <>
+      <RequireAuth>
+        <>
+          <Header />
+          <main>
+            <Outlet />
+          </main>
+        </>
+      </RequireAuth>
+    </>
   );
 };

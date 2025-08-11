@@ -7,4 +7,6 @@ export interface PostModel {
   createdAt: string;
   updatedAt: string;
   listFiles: string[];
+  userReact?: string;
+  listReacts: number[];
 }

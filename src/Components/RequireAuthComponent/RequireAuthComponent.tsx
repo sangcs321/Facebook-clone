@@ -10,7 +10,6 @@ interface RequireAuthProps {
 
 export const RequireAuth = ({ children, allowedRoles }: RequireAuthProps) => {
   const { user } = useSelector((state: RootState) => state.user);
-
   if (!user?.email) {
     return <Navigate to="/login" replace />;
   }

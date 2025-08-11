@@ -4,7 +4,7 @@ import { Dropdown, Menu } from "antd";
 import { useState } from "react";
 import styles from "./HeaderComponent.module.scss";
 
-import { clearUser } from "@Slice/UserSlice";
+import { clearUser, setUser } from "@Slice/UserSlice";
 import { RootState } from "@Store";
 import {
   Card,
@@ -37,7 +37,9 @@ export const Header = () => {
         break;
       case "3":
         navigate("/login");
-        dispatch(clearUser());
+        dispatch(setUser(undefined));
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
         break;
       case "4":
         navigate("/languages");

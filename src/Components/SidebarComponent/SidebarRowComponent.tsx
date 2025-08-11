@@ -1,6 +1,7 @@
+import { Avatar } from "@mui/material";
 import React from "react";
 import "./SidebarRowComponent.scss";
-import { Avatar } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 interface SidebarRowProps {
   src?: string;
@@ -9,12 +10,7 @@ interface SidebarRowProps {
   onClick?: () => void;
 }
 
-export const SidebarRow: React.FC<SidebarRowProps> = ({
-  src,
-  Icon,
-  title,
-  onClick,
-}) => {
+export const SidebarRow: React.FC<SidebarRowProps> = ({ src, Icon, title }) => {
   return (
     <div className="sidebarRow">
       {src && <Avatar src={src} />}

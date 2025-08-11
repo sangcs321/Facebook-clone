@@ -67,14 +67,14 @@ export const CreatePost: React.FC<CreatePostProps> = ({
             },
           });
         }
-        message.success("Đăng bài thành công!");
-        setContent("");
-        setSelectedFiles([]);
-        setPreviewImages([]);
-        setTimeout(() => {
-          onSuccess();
-        }, 500);
       }
+      message.success("Đăng bài thành công!");
+      setContent("");
+      setSelectedFiles([]);
+      setPreviewImages([]);
+      setTimeout(() => {
+        onSuccess();
+      }, 500);
     } catch (error) {
       message.error("Đăng bài thất bại!");
     }

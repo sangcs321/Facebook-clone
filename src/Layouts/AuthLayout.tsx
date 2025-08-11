@@ -1,13 +1,14 @@
-import { RequireAuth } from "@Components";
-import React from "react";
 import { Outlet } from "react-router-dom";
+import GuestRoute from "Routes/GuestRoute";
 
 export const AuthLayout = () => {
   return (
     <>
-      <main>
-        <Outlet />
-      </main>
+      <GuestRoute>
+        <main>
+          <Outlet />
+        </main>
+      </GuestRoute>
     </>
   );
 };

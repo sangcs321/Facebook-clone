@@ -135,11 +135,14 @@ export const ProfilePage = () => {
                   <div className="post-profile-item">
                     <Post
                       key={post.id}
+                      postId={post.id}
+                      userId={post.userId}
                       avatarUrl={user.avatarUrl}
                       caption={post.caption}
                       createdAt={post.createdAt}
                       name={post.name}
                       files={post.listFiles}
+                      listReacts={post.listReacts}
                     />
                     <Dropdown
                       overlay={

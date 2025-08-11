@@ -3,12 +3,15 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "@Store";
 import AppRoutes from "./Routes";
+import { AuthInit } from "@Components";
 
 function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <AppRoutes />
+        <AuthInit>
+          <AppRoutes />
+        </AuthInit>
       </BrowserRouter>
     </Provider>
   );
