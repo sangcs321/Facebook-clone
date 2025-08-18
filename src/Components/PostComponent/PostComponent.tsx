@@ -5,7 +5,13 @@ import { Avatar } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import "./PostComponent.scss";
 import { ReactApis } from "Apis/ReactApis";
-import { Image } from "antd";
+import { Image, Modal } from "antd";
+import { useSelector } from "react-redux";
+import { RootState } from "@Redux/Store/Store";
+import { CommentModal } from "@Components";
+import { ReactModel } from "@Models";
+import { CommentApis } from "Apis/CommentApis";
+import { c } from "framer-motion/dist/types.d-Bq-Qm38R";
 
 interface PostProps {
   postId: number;
@@ -17,16 +23,19 @@ interface PostProps {
   caption: string;
   listReacts: number[];
   userReact?: string;
+  isComment?: boolean;
 }
 const emojiList = [
-  { type: "Like", icon: "/like.png" },
-  { type: "Love", icon: "/love.png" },
-  { type: "Care", icon: "/care.png" },
-  { type: "Haha", icon: "/haha.png" },
-  { type: "Wow", icon: "/wow.png" },
-  { type: "Sad", icon: "/sad.png" },
-  { type: "Angry", icon: "/angry.png" },
+  { type: "like", icon: "/like.png" },
+  { type: "love", icon: "/love.png" },
+  { type: "care", icon: "/care.png" },
+  { type: "haha", icon: "/haha.png" },
+  { type: "wow", icon: "/wow.png" },
+  { type: "sad", icon: "/sad.png" },
+  { type: "angry", icon: "/angry.png" },
 ];
+type ReactionKey = "like" | "love" | "haha" | "wow" | "sad" | "angry" | "care";
+
 export const Post: React.FC<PostProps> = ({
   postId,
   userId,
@@ -37,7 +46,21 @@ export const Post: React.FC<PostProps> = ({
   caption,
   userReact,
   listReacts,
+  isComment,
 }) => {
+  const translate = useSelector(
+    (state: RootState) => state.language.TranslateModel
+  );
+  const user = useSelector((state: RootState) => state.user);
+  const reactionTexts: Record<ReactionKey, string> = {
+    like: translate.like,
+    love: translate.love,
+    care: translate.care,
+    haha: translate.haha,
+    wow: translate.wow,
+    sad: translate.sad,
+    angry: translate.angry,
+  };
   const renderImages = () => {
     const count = files.length;
 
@@ -139,7 +162,9 @@ export const Post: React.FC<PostProps> = ({
   };
 
   const [showEmojiPanel, setshowEmojiPanel] = useState(false);
-  const [emojiText, setemojiText] = useState<string>(userReact || "Like");
+  const [emojiKey, setemojiKey] = useState<string>(
+    userReact ? userReact.toLowerCase() : "like"
+  );
   const [emojiIcon, setemojiIcon] = useState<string>(
     userReact ? `/${userReact.toLowerCase()}.png` : ""
   );
@@ -154,20 +179,20 @@ export const Post: React.FC<PostProps> = ({
       const reactData = {
         postId,
         userId,
-        reactionType: type,
+        reactionType: type.charAt(0).toUpperCase() + type.slice(1),
       };
       const reactRes = await ReactApis.updateReactPost(reactData);
       if (reactRes) {
-        setemojiText(type);
+        setemojiKey(type);
         setemojiIcon(icon);
+        fetchTotalReacts();
       }
     } finally {
       setIsProcessing(false);
     }
   };
   const handleCancleReactionOrLike = async (postId: number, userId: number) => {
-    console.log("handleCancleReactionOrLike");
-    if (!emojiIcon && emojiText === "Like") {
+    if (!emojiIcon && emojiKey === "like") {
       const reactData = {
         postId,
         userId,
@@ -175,12 +200,11 @@ export const Post: React.FC<PostProps> = ({
       };
       const reactRes = await ReactApis.updateReactPost(reactData);
       if (reactRes) {
-        setemojiText("Like");
+        setemojiKey("like");
         setemojiIcon("/like.png");
-        return;
+        fetchTotalReacts();
       }
-    }
-    if (emojiIcon && emojiText) {
+    } else if (emojiIcon && emojiKey) {
       const reactCancleData = {
         postId,
         userId,
@@ -188,9 +212,9 @@ export const Post: React.FC<PostProps> = ({
       const cancleRes = await ReactApis.cancleReactPost(reactCancleData);
       if (cancleRes) {
         setemojiIcon("");
-        setemojiText("Like");
+        setemojiKey("like");
+        fetchTotalReacts();
       }
-      return;
     }
   };
 
@@ -198,28 +222,101 @@ export const Post: React.FC<PostProps> = ({
     return (
       <>
         <div className="react-icon" style={{ marginRight: "8px" }}>
-          {!emojiIcon && emojiText === "Like" ? (
+          {!emojiIcon && emojiKey === "like" ? (
             <ThumbUpIcon />
           ) : emojiIcon ? (
-            <img src={emojiIcon} alt={emojiText} />
+            <img src={emojiIcon} alt={emojiKey} />
           ) : null}
         </div>
-        <div className="react-text">{emojiText}</div>
+        <div className="react-text">
+          {reactionTexts[emojiKey as ReactionKey]}
+        </div>
       </>
     );
   };
-  const renderReactionCount = () => {
-    if (!listReacts) return;
-    const arr = listReacts;
-    console.log("222222");
-    const top3WithIndex = arr
-      .map((value, index) => ({ value, index }))
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 3);
-    console.log(top3WithIndex);
-    return <div></div>;
+  const [totalReacts, setTotalReacts] = useState<number>();
+  const [reacts, setReacts] = useState([]);
+  const [listUsers, setlistUsers] = useState<string[]>([]);
+  const [commentCount, setCommentCount] = useState(0);
+
+  const fetchTotalReacts = async () => {
+    const totalReactRes = await ReactApis.getTotalReactByPostId(postId);
+    const responseListUser = await ReactApis.getListUsersReact(postId);
+    const responseReacts = await ReactApis.getReactByPostId(postId);
+    const responseCommentCount = await CommentApis.countCommentsByPostId(
+      postId
+    );
+    console.log(totalReactRes);
+    if (totalReactRes.status === 200) {
+      setTotalReacts(totalReactRes.data);
+    }
+    if (responseListUser.status === 200) {
+      setlistUsers(responseListUser.data);
+    }
+    if (responseReacts.status === 200) {
+      setReacts(responseReacts.data);
+    }
+    if (responseCommentCount.status === 200) {
+      setCommentCount(responseCommentCount.data);
+    }
   };
-  renderReactionCount();
+
+  useEffect(() => {
+    fetchTotalReacts();
+  }, [postId]);
+
+  const renderReactionCount = () => {
+    if (!reacts || reacts.length === 0) return null;
+
+    // Đếm số lượng từng loại reaction
+    const reactionCountMap = reacts;
+
+    // Lấy top 3 loại reaction nhiều nhất
+    const topReacts = Object.entries(reactionCountMap)
+      .filter(([, count]) => count > 0) // chỉ lấy loại có count > 0
+      .sort((a, b) => Number(b[1]) - Number(a[1])) // sort giảm dần
+      .slice(0, 3) // lấy tối đa 3 loại
+      .map(([type]) => {
+        const emoji = emojiList.find((e) => e.type === type.toLowerCase());
+        return emoji ? emoji.icon : null;
+      })
+      .filter(Boolean); // bỏ những icon null
+
+    // Tạo text hiển thị tên hoặc số lượng
+    let text = "";
+    if (listUsers.length === 1) {
+      text = listUsers[0]; // chỉ 1 người react
+    } else if (listUsers.length > 1) {
+      text = `${listUsers[0]} và ${listUsers.length - 1} người khác`;
+    }
+
+    return (
+      <div className="post-info-react">
+        {/* Hiển thị icon top 3 */}
+        <div className="post-react-type">
+          {topReacts.map((icon, idx) => (
+            <img
+              key={idx}
+              src={icon!}
+              alt=""
+              style={{
+                width: 20,
+                height: 20,
+                marginRight: idx < topReacts.length - 1 ? -5 : 0, // chồng lên nhau
+                zIndex: topReacts.length - idx,
+                border: "2px solid white",
+                borderRadius: "50%",
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Hiển thị tên hoặc số lượng */}
+        <div className="post-number-react">{text}</div>
+      </div>
+    );
+  };
+  const [commentModal, setCommentModal] = useState(false);
   return (
     <div className="post">
       <div className="post_top">
@@ -240,11 +337,9 @@ export const Post: React.FC<PostProps> = ({
         {<Image.PreviewGroup>{renderImages()}</Image.PreviewGroup>}
       </div>
       <div className="post-info">
-        <div className="post-info-react">
-          <div className="post-react-type">
-            <img src="" alt="" />
-          </div>
-          <div className="post-number-react"></div>
+        {renderReactionCount()}
+        <div className="post-info-comment">
+          <div>{commentCount > 0 && `${commentCount} comments`}</div>
         </div>
       </div>
       <div className="post_options">
@@ -252,7 +347,7 @@ export const Post: React.FC<PostProps> = ({
           className="post_option"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          onClick={() => handleCancleReactionOrLike(postId, userId)}
+          onClick={() => handleCancleReactionOrLike(postId, user.user.id)}
         >
           <div className="reaction-wrapper">
             <div className="react-button">{renderIconReact()}</div>
@@ -279,16 +374,34 @@ export const Post: React.FC<PostProps> = ({
           </div>
         </div>
 
-        <div className="post_option">
+        <div
+          className="post_option"
+          onClick={() => {
+            if (isComment) return;
+            setCommentModal(true);
+          }}
+        >
           <ChatBubbleOutlineIcon />
-          <p>Comment</p>
+          <p>{translate?.postComment}</p>
         </div>
 
         <div className="post_option">
           <NearMeIcon />
-          <p>Share</p>
+          <p>{translate?.postShare}</p>
         </div>
       </div>
+      <Modal
+        visible={commentModal}
+        onCancel={() => setCommentModal(false)}
+        footer={null}
+        bodyStyle={{ padding: 0 }}
+        className="comment-modal"
+      >
+        <CommentModal
+          postId={postId}
+          fetchComments={() => fetchTotalReacts()}
+        />
+      </Modal>
     </div>
   );
 };

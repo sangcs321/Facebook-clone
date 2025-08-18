@@ -2,53 +2,46 @@ import BASE_URL from "@Constants/apiConfig.js";
 import { setUser } from "@Redux/Slice/UserSlice";
 import { Button, Form, Input, message } from "antd";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styles from "./LoginPage.module.scss";
+import { a } from "framer-motion/dist/types.d-Bq-Qm38R";
+import { UserApis } from "Apis/UserApis";
+import { LanguageApis } from "Apis/LanguageApis";
+import { RootState } from "@Redux/Store/Store";
 
 export const LoginPage = () => {
+  const translate = useSelector(
+    (state: RootState) => state.language.TranslateModel
+  );
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const onFinish = (values) => {
-    axios
-      .post(`${BASE_URL}/api/auth/login`, values)
-      .then((response) => {
-        const token = response.data.token;
-        const userId = response.data.userId;
-        localStorage.setItem("token", token);
-        localStorage.setItem("userId", userId);
-        if (token) {
-          axios
-            .get(`${BASE_URL}/api/user/${userId}`, {
-              headers: { Authorization: `Bearer ${token}` },
-            })
-            .then((response) => {
-              const user = response.data;
-              console.log("user", user);
-              if (user.active) {
-                message.error("Tài khoản của bạn đã bị chặn!");
-                return;
-              }
-              dispatch(setUser(user));
-              if (user.role === "USER") {
-                navigate("/");
-              } else {
-                navigate("/languages");
-              }
-            })
-            .catch((err) => {
-              console.log("Error: ", err);
-              message.error("Đăng nhập không thành công!");
-            });
+  const onFinish = async (values) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/api/auth/login`, values);
+      const token = response.data.token;
+      const userId = response.data.userId;
+      localStorage.setItem("token", token);
+      localStorage.setItem("userId", userId);
+      if (token) {
+        const userResponse = await UserApis.getUserById(userId);
+        const user = userResponse.data;
+        if (user.active) {
+          message.error("Tài khoản của bạn đã bị chặn!");
+          return;
         }
-      })
-      .catch((error) => {
-        console.error("Login error:", error);
-        message.error(
-          "Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin đăng nhập của bạn."
-        );
-      });
+        dispatch(setUser(user));
+        if (user.role === "USER") {
+          navigate("/");
+        } else {
+          navigate("/languages");
+        }
+      }
+    } catch (error) {
+      console.log("Error: ", error);
+      message.error("Đăng nhập không thành công!");
+    }
   };
   return (
     <div className="container">
@@ -90,11 +83,11 @@ export const LoginPage = () => {
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit">
-                Login
+                {translate?.login}
               </Button>
             </Form.Item>
             <Button type="link" href="/login">
-              Quên mật khẩu?
+              {translate?.forgetPassword}?
             </Button>
             <div className={styles.line}></div>
             <Button
@@ -102,7 +95,7 @@ export const LoginPage = () => {
               type="link"
               href="/register"
             >
-              Tạo tài khoản mới
+              {translate?.createAccount}
             </Button>
           </Form>
         </div>

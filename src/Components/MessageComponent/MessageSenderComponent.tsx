@@ -14,6 +14,9 @@ interface MessageSenderProps {
 
 export const MessageSender = ({ onSuccess }: MessageSenderProps) => {
   const { user } = useSelector((state: RootState) => state.user);
+  const translate = useSelector(
+    (state: RootState) => state.language.TranslateModel
+  );
   const [showModal, setShowModal] = useState(false);
   const [input, setInput] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -51,7 +54,7 @@ export const MessageSender = ({ onSuccess }: MessageSenderProps) => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             className="messageSender_input"
-            placeholder={`What's on your mind`}
+            placeholder={translate?.createPostTitle}
             onClick={() => setShowModal(true)}
             readOnly
           />
@@ -61,17 +64,23 @@ export const MessageSender = ({ onSuccess }: MessageSenderProps) => {
       <div className="messageSender_bottom">
         <div className="messageSender_option">
           <Video size="24" color="#FF0000" variant="Bold" />
-          <div className="messageSender_optionText">Live Video</div>
+          <div className="messageSender_optionText">
+            {translate?.createPostOption1}
+          </div>
         </div>
 
         <div className="messageSender_option">
           <Image size="24" color="#45bd62" variant="Bold" />
-          <div className="messageSender_optionText">Photo/Video</div>
+          <div className="messageSender_optionText">
+            {translate?.createPostOption2}
+          </div>
         </div>
 
         <div className="messageSender_option">
           <EmojiHappy size="24" color="#f7b928" />
-          <div className="messageSender_optionText">Feeling/Activity</div>
+          <div className="messageSender_optionText">
+            {translate?.createPostOption3}
+          </div>
         </div>
       </div>
       <Modal

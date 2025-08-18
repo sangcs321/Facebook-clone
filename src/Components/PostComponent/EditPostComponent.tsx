@@ -8,6 +8,7 @@ import {
   Location,
   More,
   People,
+  Translate,
   VideoAdd,
 } from "iconsax-reactjs";
 import React, { useEffect, useRef, useState } from "react";
@@ -27,9 +28,13 @@ export const EditPost: React.FC<EditPostProps> = ({
   post,
 }) => {
   const { user } = useSelector((state: RootState) => state.user);
+  const translate = useSelector(
+    (state: RootState) => state.language.TranslateModel
+  );
   const [existFiles, setexistFiles] = useState<string[]>([]);
   const [newfiles, setNewFiles] = useState<File[]>([]);
   const [content, setContent] = useState<string>(post.caption);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (post) {
       setContent(post.caption || "");
@@ -47,6 +52,8 @@ export const EditPost: React.FC<EditPostProps> = ({
     hiddenFileInput.current.click(); // mở hộp thoại chọn ảnh
   };
   const handleSubmit = async () => {
+    if (loading) return;
+    setLoading(true);
     const formData = new FormData();
     const updateData = {
       caption: content,
@@ -60,14 +67,17 @@ export const EditPost: React.FC<EditPostProps> = ({
       formData.append("newFiles", file);
     });
     try {
-      await PostApis.updatePost(post.id, formData);
-      message.success("Cập nhật bài viết thành công!");
-      setContent("");
-      setexistFiles([]);
-      setNewFiles([]);
-      onSuccess();
+      const response = await PostApis.updatePost(post.id, formData);
+      if (response.status === 200) {
+        message.success(translate?.editPostSuccess);
+        setContent("");
+        setexistFiles([]);
+        setNewFiles([]);
+        setLoading(false);
+        onSuccess();
+      }
     } catch {
-      message.error("Cập nhật bài viết thất bại!");
+      message.error(translate?.editPostFail);
     }
   };
   const handleRemoveExistFiles = (url: string) => {
@@ -83,7 +93,7 @@ export const EditPost: React.FC<EditPostProps> = ({
         <div>
           <div style={{ fontWeight: 600 }}>{user.name}</div>
           <Button size="small" onClick={() => goToStep(1)}>
-            👥 Friends
+            👥 {translate?.friends}
           </Button>
         </div>
       </Space>
@@ -167,8 +177,13 @@ export const EditPost: React.FC<EditPostProps> = ({
           </div>
         </div>
         <div>
-          <Button size="middle" className="postBtn" onClick={handleSubmit}>
-            Cập nhật
+          <Button
+            size="middle"
+            className="postBtn"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
+            {translate?.edit}
           </Button>
         </div>
       </Space>

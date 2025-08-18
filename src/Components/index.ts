@@ -17,3 +17,6 @@ export * from "./WidgetComponent/FriendWidgetComponent";
 export * from "./WidgetComponent/WidgetsComponent";
 export * from "./RequireAuthComponent/RequireAuthComponent";
 export * from "./AuthInit/AuthInit";
+export * from "./PostComponent/EditPostComponent";
+export * from "./LoadingComponent/LoadingComponent";
+export * from "./CommentComponent/CommentModal";

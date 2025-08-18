@@ -16,6 +16,9 @@ import { useNavigate } from "react-router-dom";
 
 export const Sidebar = () => {
   const { user } = useSelector((state: RootState) => state.user);
+  const translate = useSelector(
+    (state: RootState) => state.language.TranslateModel
+  );
   const navigate = useNavigate();
 
   return (
@@ -27,12 +30,12 @@ export const Sidebar = () => {
         title={user.name}
         onClick={() => navigate("/profile")}
       />
-      <SidebarRow Icon={LocalHospital} title="COVID-19 Information Center" />
-      <SidebarRow Icon={EmojiFlags} title="Pages" />
-      <SidebarRow Icon={People} title="Friends" />
-      <SidebarRow Icon={Chat} title="Messanger" />
-      <SidebarRow Icon={Storefront} title="Marketplace" />
-      <SidebarRow Icon={VideoLibrary} title="Videos" />
+      <SidebarRow Icon={LocalHospital} title={translate?.sideBarMenu1} />
+      <SidebarRow Icon={EmojiFlags} title={translate?.sideBarMenu2} />
+      <SidebarRow Icon={People} title={translate?.sideBarMenu3} />
+      <SidebarRow Icon={Chat} title={translate?.sideBarMenu4} />
+      <SidebarRow Icon={Storefront} title={translate?.sideBarMenu5} />
+      <SidebarRow Icon={VideoLibrary} title={translate?.sideBarMenu6} />
       <SidebarRow Icon={ExpandMoreOutlined} title="More" />
     </div>
   );

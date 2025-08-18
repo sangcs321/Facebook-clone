@@ -1,16 +1,11 @@
-import { MessageSender, Post, StoryReel } from "@Components";
+import { LoadingComponent, MessageSender, Post, StoryReel } from "@Components";
 import { PostModel } from "@Models";
 import { RootState } from "@Store";
 import { PostApis } from "Apis/PostApis";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import "./FeedComponent.scss";
-
-const Loading = () => (
-  <div className="post loading">
-    <h5>Đang tải...</h5>
-  </div>
-);
+import { message } from "antd";
 
 export const Feed = () => {
   const { user } = useSelector((state: RootState) => state.user);
@@ -26,7 +21,6 @@ export const Feed = () => {
       if (!user.id || loading || !hasMore) return;
       setLoading(true);
       try {
-        console.log("Đang lấy bài viết cho trang:", currentPage);
         const postsRes = await PostApis.getFriendPosts(
           user.id,
           currentPage,
@@ -41,6 +35,7 @@ export const Feed = () => {
         }
       } catch (error) {
         console.error("Lỗi khi lấy bài viết:", error);
+        message.error("Không thể lấy bài viết. Vui lòng thử lại sau.");
       } finally {
         setLoading(false);
         isFetching.current = false; // Đặt lại ref sau khi fetch hoàn tất
@@ -52,7 +47,6 @@ export const Feed = () => {
   // Tải lần đầu
   useEffect(() => {
     if (user.id) {
-      console.log("run", user.id);
       fetchPosts(0);
     }
   }, [user.id]);
@@ -61,17 +55,15 @@ export const Feed = () => {
   useEffect(() => {
     if (page > 0) {
       fetchPosts(page);
-      console.log("22222");
     }
   }, [page, fetchPosts]);
 
   // Xử lý cuộn để tải vô hạn
   useEffect(() => {
-    console.log("33333");
     const handleScroll = () => {
       if (
         window.innerHeight + window.scrollY >=
-          document.body.scrollHeight - 500 &&
+          document.body.scrollHeight - 50 &&
         !isFetching.current && // Dùng ref để kiểm tra ngay lập tức
         hasMore
       ) {
@@ -83,11 +75,8 @@ export const Feed = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [hasMore]); // Bỏ 'loading' khỏi phụ thuộc, vì ref xử lý
-
-  useEffect(() => {
-    console.log("trang mới:", page);
-  }, [page]);
+  }, [hasMore]);
+  const firstPostRef = useRef<HTMLDivElement>(null);
 
   return (
     <div className="feed">
@@ -100,23 +89,25 @@ export const Feed = () => {
         }}
       />
       <StoryReel />
-      {posts
-        .filter((post) => post.status !== "deleted")
-        .map((post) => (
-          <Post
-            // key={post.id}
-            userId={post.userId}
-            postId={post.id}
-            avatarUrl={user.avatarUrl}
-            caption={post.caption}
-            createdAt={post.createdAt}
-            name={post.name}
-            files={post.listFiles}
-            userReact={post.userReact}
-            listReacts={post.listReacts}
-          />
-        ))}
-      {loading && <Loading />} {/* Thêm chỉ báo loading ở cuối */}
+      <div ref={firstPostRef} style={{ width: "100%" }}>
+        {posts
+          .filter((post) => post.status !== "deleted")
+          .map((post) => (
+            <Post
+              key={post.id}
+              userId={post.userId}
+              postId={post.id}
+              avatarUrl={user.avatarUrl}
+              caption={post.caption}
+              createdAt={post.createdAt}
+              name={post.name}
+              files={post.listFiles}
+              userReact={post.userReact}
+              listReacts={post.listReacts}
+            />
+          ))}
+      </div>
+      {loading && <LoadingComponent />}
     </div>
   );
 };

@@ -1,10 +1,10 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { Avatar, IconButton } from "@mui/material";
 import { Dropdown, Menu } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./HeaderComponent.module.scss";
 
-import { clearUser, setUser } from "@Slice/UserSlice";
+import { setUser } from "@Slice/UserSlice";
 import { RootState } from "@Store";
 import {
   Card,
@@ -18,20 +18,33 @@ import {
 } from "iconsax-reactjs";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { c } from "framer-motion/dist/types.d-Bq-Qm38R";
+import { WindowRounded } from "@mui/icons-material";
+import { LanguageApis } from "Apis/LanguageApis";
 
 export const Header = () => {
   const [showSearch, setShowSearch] = useState(false);
   const { user } = useSelector((state: RootState) => state.user);
+  const translate = useSelector(
+    (state: RootState) => state.language.TranslateModel
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [language, setLanguage] = useState("en");
+
+  const [language, setLanguage] = useState();
+  useEffect(() => {
+    const fetchChoice = async () => {
+      const response = await LanguageApis.getChoiceLanguage();
+      if (response.status === 200) {
+        setLanguage(response.data.language);
+      }
+    };
+    fetchChoice();
+  }, [language]);
   const handleMenuClick = (e) => {
-    console.log("Clicked menu item key:", e.key);
     switch (e.key) {
       case "1":
         // Thông tin cá nhân
-        navigate("/profile");
+        window.location.href = `/profile`;
         break;
       case "2":
         // Cài đặt
@@ -49,15 +62,19 @@ export const Header = () => {
         break;
     }
   };
-  const handleLanguageChange = (e) => {
+  const handleLanguageChange = async (e) => {
     setLanguage(e.key);
+    const response = await LanguageApis.updateChoiceLanguage(e.key);
+    if (response.status === 200) {
+      window.location.reload();
+    }
   };
   const menu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item key="1">Thông tin cá nhân</Menu.Item>
-      <Menu.Item key="2">Cài đặt</Menu.Item>
-      <Menu.Item key="4">Quản lý</Menu.Item>
-      <Menu.Item key="3">Đăng xuất</Menu.Item>
+      <Menu.Item key="1">{translate?.headerMenuInfo}</Menu.Item>
+      <Menu.Item key="2">{translate?.headerMenuSettings}</Menu.Item>
+      <Menu.Item key="4">{translate?.headerMenuManagement}</Menu.Item>
+      <Menu.Item key="3">{translate?.headerMenuLogout}</Menu.Item>
     </Menu>
   );
   const menuLanguage = (
@@ -68,15 +85,15 @@ export const Header = () => {
   );
   return (
     <div className={styles.header}>
-      <div className={styles["header__left"]}>
+      <div className={styles["headerLeft"]}>
         <img
-          onClick={() => navigate("/")}
+          onClick={() => (window.location.href = "/")}
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/1200px-Facebook_f_logo_%282019%29.svg.png"
           alt=""
         />
 
         <div
-          className={`${styles["header__left__input"]} ${
+          className={`${styles["headerLeftInput"]} ${
             showSearch ? styles["show"] : ""
           }`}
         >
@@ -84,36 +101,36 @@ export const Header = () => {
             className="search-toggle"
             onClick={() => setShowSearch(!showSearch)}
           />
-          <input placeholder="Search Facebook" type="text" />
+          <input placeholder={translate?.headerSearchInput} type="text" />
         </div>
       </div>
 
-      <div className={styles["header__center"]}>
+      <div className={styles["headerCenter"]}>
         <div
-          className={`${styles["header__center__option"]} ${styles["header__center__option--active"]}`}
+          className={`${styles["headerCenterOption"]} ${styles["headerCenterOption--active"]}`}
         >
           <Home2 size="32" color="#2e81f4" variant="Bold" />
         </div>
 
-        <div className={styles["header__center__option"]}>
+        <div className={styles["headerCenterOption"]}>
           <VideoSquare size="32" color="#000000" variant="Bold" />
         </div>
 
-        <div className={styles["header__center__option"]}>
+        <div className={styles["headerCenterOption"]}>
           <Card size="32" color="#000000" variant="Bold" />
         </div>
 
-        <div className={styles["header__center__option"]}>
+        <div className={styles["headerCenterOption"]}>
           {" "}
           <Flag size="32" color="#000000" variant="Bold" />
         </div>
 
-        <div className={styles["header__center__option"]}>
+        <div className={styles["headerCenterOption"]}>
           <People size="32" color="#000000" variant="Bold" />
         </div>
       </div>
 
-      <div className={styles["header__right"]}>
+      <div className={styles["headerRight"]}>
         <Dropdown
           overlay={menuLanguage}
           trigger={["click"]}
@@ -161,8 +178,8 @@ export const Header = () => {
         </IconButton>
 
         <Dropdown overlay={menu} trigger={["click"]} placement="bottomRight">
-          <div className="header_info" style={{ cursor: "pointer" }}>
-            <Avatar src="https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg" />
+          <div className="headerInfo" style={{ cursor: "pointer" }}>
+            <Avatar src={user.avatarUrl} />
           </div>
         </Dropdown>
       </div>

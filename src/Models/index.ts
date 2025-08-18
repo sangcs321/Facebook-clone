@@ -5,3 +5,5 @@ export * from "./FriendModel";
 export * from "./PostModel";
 export * from "./CreatePostModel";
 export * from "./ReactModel";
+export * from "./TranslateModel";
+export * from "./CommentModel";

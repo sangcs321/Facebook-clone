@@ -26,9 +26,13 @@ export const CreatePost: React.FC<CreatePostProps> = ({
   onSuccess,
 }) => {
   const { user } = useSelector((state: RootState) => state.user);
+  const translate = useSelector(
+    (state: RootState) => state.language.TranslateModel
+  );
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [previewImages, setPreviewImages] = useState<string[]>([]);
   const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
   const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
@@ -45,6 +49,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({
     hiddenFileInput.current.click(); // mở hộp thoại chọn ảnh
   };
   const handleSubmit = async () => {
+    if (loading) return;
     const newPost: CreatePostModel = {
       caption: content,
       status: "friends",
@@ -52,6 +57,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({
     };
     try {
       const response = await PostApis.createPost(newPost);
+      setLoading(true);
       console.log(response.data);
       const postId = response.data.id;
       if (selectedFiles && selectedFiles.length > 0) {
@@ -68,15 +74,16 @@ export const CreatePost: React.FC<CreatePostProps> = ({
           });
         }
       }
-      message.success("Đăng bài thành công!");
+      message.success(translate?.createPostSuccess);
       setContent("");
       setSelectedFiles([]);
       setPreviewImages([]);
       setTimeout(() => {
+        setLoading(false);
         onSuccess();
       }, 500);
     } catch (error) {
-      message.error("Đăng bài thất bại!");
+      message.error(translate?.postFail);
     }
   };
 
@@ -87,7 +94,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({
         <div>
           <div style={{ fontWeight: 600 }}>{user.name}</div>
           <Button size="small" onClick={() => goToStep(1)}>
-            👥 Friends
+            👥 {translate?.friends}
           </Button>
         </div>
       </Space>
@@ -97,7 +104,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({
             className="textAreaCaption"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="What on your mind?"
+            placeholder={translate?.createPostTitle}
             rows={5}
             cols={40}
             style={{ width: "100%", border: "none" }}
@@ -129,7 +136,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({
       <Space direction="vertical" style={{ width: "100%" }}>
         <div className="addToPost">
           <Text style={{ color: "#e4e6eb", fontWeight: 500, marginLeft: 5 }}>
-            Add to your post
+            {translate?.addToPost}
           </Text>
           <div style={{ display: "flex", gap: 6 }}>
             <button
@@ -165,8 +172,13 @@ export const CreatePost: React.FC<CreatePostProps> = ({
           </div>
         </div>
         <div>
-          <Button size="middle" className="postBtn" onClick={handleSubmit}>
-            Post
+          <Button
+            size="middle"
+            className="postBtn"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
+            {translate?.postButton}
           </Button>
         </div>
       </Space>

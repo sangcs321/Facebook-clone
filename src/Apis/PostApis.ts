@@ -13,8 +13,10 @@ export const PostApis = {
   createPost(post: CreatePostModel) {
     return ApiService.post<PostModel>(`/api/post`, post);
   },
-  getPostsByUserId(userId: number) {
-    return ApiService.get<PostModel[]>(`/api/post/user/${userId}`);
+  getPostsByUserId(userId: number, page: number, limit: number = 5) {
+    return ApiService.get<PostModel[]>(
+      `/api/post/user/${userId}?page=${page}&limit=${limit}`
+    );
   },
   deletePostById(id: number) {
     return ApiService.delete(`/api/post/${id}`);

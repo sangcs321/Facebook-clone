@@ -15,7 +15,7 @@ import {
   Space,
   Tabs,
 } from "antd";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -23,7 +23,8 @@ import { PostModel } from "@Models";
 import { PostApis } from "Apis/PostApis";
 import { More } from "iconsax-reactjs";
 import "./ProfilePage.scss";
-import { EditPost } from "Components/PostComponent/EditPostComponent";
+import { EditPost } from "@Components";
+import { transform } from "framer-motion";
 
 const { Content } = Layout;
 const { TabPane } = Tabs;
@@ -31,18 +32,71 @@ const { TabPane } = Tabs;
 export const ProfilePage = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { user } = useSelector((state: RootState) => state.user);
+  const translate = useSelector(
+    (state: RootState) => state.language.TranslateModel
+  );
   const [postsProfile, setpostsProfile] = useState<PostModel[]>([]);
-  const fecthData = async () => {
-    const postsResUser = await PostApis.getPostsByUserId(user.id);
-    if (postsResUser.status === 200) {
-      setpostsProfile(postsResUser.data);
-    }
-  };
+  const limit = 5;
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const isFetching = useRef(false);
+  const fetchPosts = useCallback(
+    async (currentPage: number) => {
+      if (!user.id || !hasMore || loading) return;
+      setLoading(true);
+      try {
+        const postsRes = await PostApis.getPostsByUserId(
+          user.id,
+          currentPage,
+          limit
+        );
+        if (postsRes.status === 200) {
+          const newPosts = postsRes.data;
+          setpostsProfile((prev) => [...prev, ...newPosts]);
+          if (newPosts.length < limit) {
+            setHasMore(false);
+          }
+        }
+      } catch (error) {
+        message.error("Không thể lấy bài viết. Vui lòng thử lại sau.");
+        console.log("Lỗi khi lấy bài viết ở ProfilePage:", error);
+      } finally {
+        setLoading(false);
+        isFetching.current = false;
+      }
+    },
+    [user.id]
+  );
+  // Tải lần đầu
   useEffect(() => {
     if (user.id) {
-      fecthData();
+      fetchPosts(0);
     }
   }, [user.id]);
+  // Tải khi trang thay đổi (cho các trang > 0)
+  useEffect(() => {
+    if (page > 0) {
+      fetchPosts(page);
+    }
+  }, [page, fetchPosts]);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+          document.body.scrollHeight - 500 &&
+        !isFetching.current &&
+        hasMore
+      ) {
+        isFetching.current = true;
+        setPage((prev) => prev + 1);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [hasMore]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isModalEditPost, setIsModalEditPost] = useState(false);
@@ -55,18 +109,23 @@ export const ProfilePage = () => {
 
   const handleDeletePost = (postId: number) => {
     Modal.confirm({
-      title: "Bạn có chắc chắn muốn xóa bài viết này?",
-      content: "Hành động này không thể hoàn tác.",
-      okText: "Xóa",
-      cancelText: "Hủy",
+      title: translate?.deletePostWarning,
+      content: translate?.deleteContentPostWarning,
+      okText: translate?.delete,
+      cancelText: translate?.cancel,
       okType: "danger",
       onOk: async () => {
         try {
-          await PostApis.deletePostById(postId);
-          message.success("Xóa bài viết thành công!");
-          fecthData();
+          const response = await PostApis.deletePostById(postId);
+          if (response.status === 200) {
+            message.success(translate?.deletePostSuccess);
+            fetchPosts(0);
+            setpostsProfile([]);
+            setPage(0);
+            setHasMore(true);
+          }
         } catch (err) {
-          message.error("Xóa thất bại!");
+          message.error(translate?.deletePostFail);
         }
       },
     });
@@ -105,9 +164,9 @@ export const ProfilePage = () => {
             </Col>
             <Col>
               <Space>
-                <Button icon={<PlusOutlined />}>Add to story</Button>
+                <Button icon={<PlusOutlined />}>{translate?.addToStory}</Button>
                 <Button icon={<EditOutlined />} onClick={showModal}>
-                  Edit profile
+                  {translate?.editProfile}
                 </Button>
               </Space>
             </Col>
@@ -115,12 +174,12 @@ export const ProfilePage = () => {
         </Card>
 
         <Tabs defaultActiveKey="1" className="profile-tabs">
-          <TabPane tab="Posts" key="1">
+          <TabPane tab={translate?.tabProfilePosts} key="1">
             <Card title="Intro" className="intro-card">
               <p>🏠 Lives in {user.address}</p>
               <p>📅 {user.dateOfBirth}</p>
               {/* <p>📅 Joined on October 2016</p> */}
-              <Button>Edit details</Button>
+              <Button>{translate?.editProfileDetails}</Button>
             </Card>
 
             {/* <Card title="Posts" className="posts-card">
@@ -134,21 +193,23 @@ export const ProfilePage = () => {
                 .map((post) => (
                   <div className="post-profile-item">
                     <Post
-                      key={post.id}
-                      postId={post.id}
                       userId={post.userId}
+                      postId={post.id}
                       avatarUrl={user.avatarUrl}
                       caption={post.caption}
                       createdAt={post.createdAt}
                       name={post.name}
                       files={post.listFiles}
+                      userReact={post.userReact}
                       listReacts={post.listReacts}
                     />
                     <Dropdown
                       overlay={
                         <Menu onClick={({ key }) => handleMenuClick(post, key)}>
-                          <Menu.Item key="delete">Xóa</Menu.Item>
-                          <Menu.Item key="edit">Chỉnh sửa</Menu.Item>
+                          <Menu.Item key="delete">
+                            {translate?.delete}
+                          </Menu.Item>
+                          <Menu.Item key="edit">{translate?.edit}</Menu.Item>
                         </Menu>
                       }
                       trigger={["click"]}
@@ -163,16 +224,16 @@ export const ProfilePage = () => {
             </div>
           </TabPane>
 
-          <TabPane tab="About" key="2">
+          <TabPane tab={translate?.tabProfileAbout} key="2">
             About content...
           </TabPane>
-          <TabPane tab="Friends" key="3">
+          <TabPane tab={translate?.tabProfileFriends} key="3">
             Friend list...
           </TabPane>
-          <TabPane tab="Photos" key="4">
+          <TabPane tab={translate?.tabProfilePhotos} key="4">
             Photos...
           </TabPane>
-          <TabPane tab="Videos" key="5">
+          <TabPane tab={translate?.tabProfileVideos} key="5">
             Videos...
           </TabPane>
         </Tabs>
@@ -188,7 +249,7 @@ export const ProfilePage = () => {
         <EditProfile />
       </Modal>
       <Modal
-        title="Edit post"
+        title={translate?.editPost}
         open={isModalEditPost}
         onCancel={() => {
           setIsModalEditPost(false);
@@ -200,8 +261,11 @@ export const ProfilePage = () => {
         <EditPost
           post={editingPost}
           onSuccess={() => {
-            fecthData();
+            fetchPosts(0);
             setIsModalEditPost(false);
+            setpostsProfile([]);
+            setPage(0);
+            setHasMore(true);
           }}
         />
       </Modal>
